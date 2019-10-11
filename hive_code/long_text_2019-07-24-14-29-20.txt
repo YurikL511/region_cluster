@@ -1,0 +1,300 @@
+-----revenue
+SELECT latest_city_name_en, 'revenue' AS index,
+	SUM(CASE WHEN a.dt='2019-02-25' THEN revenue ELSE 0 END) AS day_1,
+	SUM(CASE WHEN a.dt='2019-02-26' THEN revenue ELSE 0 END) AS day_2,
+	SUM(CASE WHEN a.dt='2019-02-27' THEN revenue ELSE 0 END) AS day_3,
+	SUM(CASE WHEN a.dt='2019-02-28' THEN revenue ELSE 0 END) AS day_4,
+	SUM(CASE WHEN a.dt='2019-03-01' THEN revenue ELSE 0 END) AS day_5,
+	SUM(CASE WHEN a.dt='2019-03-02' THEN revenue ELSE 0 END) AS day_6,
+	SUM(CASE WHEN a.dt='2019-03-03' THEN revenue ELSE 0 END) AS day_7,
+	SUM(CASE WHEN a.dt='2019-03-04' THEN revenue ELSE 0 END) AS day_8,
+	SUM(CASE WHEN a.dt='2019-03-05' THEN revenue ELSE 0 END) AS day_9,
+	SUM(CASE WHEN a.dt='2019-03-06' THEN revenue ELSE 0 END) AS day_10,
+	SUM(CASE WHEN a.dt='2019-03-07' THEN revenue ELSE 0 END) AS day_11,
+	SUM(CASE WHEN a.dt='2019-03-08' THEN revenue ELSE 0 END) AS day_12,
+	SUM(CASE WHEN a.dt='2019-03-09' THEN revenue ELSE 0 END) AS day_13,
+	SUM(CASE WHEN a.dt='2019-03-10' THEN revenue ELSE 0 END) AS day_14,
+	SUM(CASE WHEN a.dt='2019-03-11' THEN revenue ELSE 0 END) AS day_15,
+	SUM(CASE WHEN a.dt='2019-03-12' THEN revenue ELSE 0 END) AS day_16,
+	SUM(CASE WHEN a.dt='2019-03-13' THEN revenue ELSE 0 END) AS day_17,
+	SUM(CASE WHEN a.dt='2019-03-14' THEN revenue ELSE 0 END) AS day_18,
+	SUM(CASE WHEN a.dt='2019-03-15' THEN revenue ELSE 0 END) AS day_19,
+	SUM(CASE WHEN a.dt='2019-03-16' THEN revenue ELSE 0 END) AS day_20,
+	SUM(CASE WHEN a.dt='2019-03-17' THEN revenue ELSE 0 END) AS day_21,
+	SUM(CASE WHEN a.dt='2019-03-18' THEN revenue ELSE 0 END) AS day_22,
+	SUM(CASE WHEN a.dt='2019-03-19' THEN revenue ELSE 0 END) AS day_23,
+	SUM(CASE WHEN a.dt='2019-03-20' THEN revenue ELSE 0 END) AS day_24,
+	SUM(CASE WHEN a.dt='2019-03-21' THEN revenue ELSE 0 END) AS day_25,
+	SUM(CASE WHEN a.dt='2019-03-22' THEN revenue ELSE 0 END) AS day_26,
+	SUM(CASE WHEN a.dt='2019-03-23' THEN revenue ELSE 0 END) AS day_27,
+	SUM(CASE WHEN a.dt='2019-03-24' THEN revenue ELSE 0 END) AS day_28
+	
+FROM
+
+(SELECT user_id, dt,latest_city_name_en
+FROM dwd.dwd_daily_active_users_info_wide_table
+WHERE dt>='2019-02-25' AND dt<='2019-03-24'and status='default'
+AND LENGTH(latest_os_name) >0 AND latest_os_name IS NOT NULL
+AND latest_city_name_en IN (SELECT latest_city_name_en FROM da.gwt_20000))a
+
+LEFT JOIN 
+
+(
+SELECT user_id,dt, revenue, duration
+FROM dws.dws_user_metrics_i_d
+
+WHERE dt>='2019-02-25' AND dt<='2019-03-24'
+)b
+
+ON a.dt=b.dt AND a.user_id=b.user_id
+GROUP BY latest_city_name_en
+
+UNION ALL 
+
+---dau
+
+SELECT latest_city_name_en, 'dau' AS index,
+	COUNT(DISTINCT CASE WHEN dt='2019-02-25' THEN user_id ELSE NULL END) AS day_1,
+	COUNT(DISTINCT CASE WHEN dt='2019-02-26' THEN user_id ELSE NULL END) AS day_2,
+	COUNT(DISTINCT CASE WHEN dt='2019-02-27' THEN user_id ELSE NULL END) AS day_3,
+	COUNT(DISTINCT CASE WHEN dt='2019-02-28' THEN user_id ELSE NULL END) AS day_4,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-01' THEN user_id ELSE NULL END) AS day_5,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-02' THEN user_id ELSE NULL END) AS day_6,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-03' THEN user_id ELSE NULL END) AS day_7,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-04' THEN user_id ELSE NULL END) AS day_8,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-05' THEN user_id ELSE NULL END) AS day_9,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-06' THEN user_id ELSE NULL END) AS day_10,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-07' THEN user_id ELSE NULL END) AS day_11,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-08' THEN user_id ELSE NULL END) AS day_12,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-09' THEN user_id ELSE NULL END) AS day_13,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-10' THEN user_id ELSE NULL END) AS day_14,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-11' THEN user_id ELSE NULL END) AS day_15,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-12' THEN user_id ELSE NULL END) AS day_16,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-13' THEN user_id ELSE NULL END) AS day_17,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-14' THEN user_id ELSE NULL END) AS day_18,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-15' THEN user_id ELSE NULL END) AS day_19,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-16' THEN user_id ELSE NULL END) AS day_20,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-17' THEN user_id ELSE NULL END) AS day_21,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-18' THEN user_id ELSE NULL END) AS day_22,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-19' THEN user_id ELSE NULL END) AS day_23,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-20' THEN user_id ELSE NULL END) AS day_24,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-21' THEN user_id ELSE NULL END) AS day_25,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-22' THEN user_id ELSE NULL END) AS day_26,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-23' THEN user_id ELSE NULL END) AS day_27,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-24' THEN user_id ELSE NULL END) AS day_28
+
+FROM dwd.dwd_daily_active_users_info_wide_table
+WHERE dt>='2019-02-25' AND dt<='2019-03-24'and status='default'
+AND LENGTH(latest_os_name) >0 AND latest_os_name IS NOT NULL
+AND latest_city_name_en IN (SELECT latest_city_name_en FROM da.gwt_20000)
+GROUP BY latest_city_name_en
+
+UNION ALL
+
+----duration 
+
+SELECT cu.latest_city_name_en, 'duration' AS index,
+	SUM(CASE WHEN cu.dt='2019-02-25' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_1,
+	SUM(CASE WHEN cu.dt='2019-02-26' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_2,
+	SUM(CASE WHEN cu.dt='2019-02-27' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_3,
+	SUM(CASE WHEN cu.dt='2019-02-28' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_4,
+	SUM(CASE WHEN cu.dt='2019-03-01' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_5,
+	SUM(CASE WHEN cu.dt='2019-03-02' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_6,
+	SUM(CASE WHEN cu.dt='2019-03-03' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_7,
+	SUM(CASE WHEN cu.dt='2019-03-04' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_8,
+	SUM(CASE WHEN cu.dt='2019-03-05' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_9,
+	SUM(CASE WHEN cu.dt='2019-03-06' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_10,
+	SUM(CASE WHEN cu.dt='2019-03-07' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_11,
+	SUM(CASE WHEN cu.dt='2019-03-08' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_12,
+	SUM(CASE WHEN cu.dt='2019-03-09' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_13,
+	SUM(CASE WHEN cu.dt='2019-03-10' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_14,
+	SUM(CASE WHEN cu.dt='2019-03-11' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_15,
+	SUM(CASE WHEN cu.dt='2019-03-12' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_16,
+	SUM(CASE WHEN cu.dt='2019-03-13' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_17,
+	SUM(CASE WHEN cu.dt='2019-03-14' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_18,
+	SUM(CASE WHEN cu.dt='2019-03-15' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_19,
+	SUM(CASE WHEN cu.dt='2019-03-16' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_20,
+	SUM(CASE WHEN cu.dt='2019-03-17' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_21,
+	SUM(CASE WHEN cu.dt='2019-03-18' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_22,
+	SUM(CASE WHEN cu.dt='2019-03-19' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_23,
+	SUM(CASE WHEN cu.dt='2019-03-20' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_24,
+	SUM(CASE WHEN cu.dt='2019-03-21' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_25,
+	SUM(CASE WHEN cu.dt='2019-03-22' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_26,
+	SUM(CASE WHEN cu.dt='2019-03-23' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_27,
+	SUM(CASE WHEN cu.dt='2019-03-24' THEN (cu.duration*1.0/cu.duration_uv) ELSE 0 END) AS day_28
+
+FROM
+
+(SELECT a.dt,latest_city_name_en,
+	SUM(duration/60000)*1.0 AS duration,
+	COUNT(DISTINCT CASE WHEN duration >0 THEN a.user_id ELSE NULL END) AS duration_uv	
+	
+FROM
+
+(SELECT user_id, dt,latest_city_name_en
+FROM dwd.dwd_daily_active_users_info_wide_table
+WHERE dt>='2019-02-25' AND dt<='2019-03-24'and status='default'
+AND LENGTH(latest_os_name) >0 AND latest_os_name IS NOT NULL
+AND latest_city_name_en IN (SELECT latest_city_name_en FROM da.gwt_20000))a
+
+LEFT JOIN 
+
+(
+SELECT user_id,dt, duration
+FROM dws.dws_user_metrics_i_d
+
+WHERE dt>='2019-02-25' AND dt<='2019-03-24'
+)b
+
+ON a.dt=b.dt AND a.user_id=b.user_id
+GROUP BY a.dt, latest_city_name_en
+) cu
+
+GROUP BY cu.latest_city_name_en
+
+UNION ALL
+
+------new user
+
+SELECT latest_city_name_en, 'new_user' AS index,
+	COUNT(DISTINCT CASE WHEN dt='2019-02-25' THEN user_id ELSE NULL END) AS day_1,
+	COUNT(DISTINCT CASE WHEN dt='2019-02-26' THEN user_id ELSE NULL END) AS day_2,
+	COUNT(DISTINCT CASE WHEN dt='2019-02-27' THEN user_id ELSE NULL END) AS day_3,
+	COUNT(DISTINCT CASE WHEN dt='2019-02-28' THEN user_id ELSE NULL END) AS day_4,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-01' THEN user_id ELSE NULL END) AS day_5,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-02' THEN user_id ELSE NULL END) AS day_6,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-03' THEN user_id ELSE NULL END) AS day_7,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-04' THEN user_id ELSE NULL END) AS day_8,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-05' THEN user_id ELSE NULL END) AS day_9,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-06' THEN user_id ELSE NULL END) AS day_10,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-07' THEN user_id ELSE NULL END) AS day_11,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-08' THEN user_id ELSE NULL END) AS day_12,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-09' THEN user_id ELSE NULL END) AS day_13,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-10' THEN user_id ELSE NULL END) AS day_14,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-11' THEN user_id ELSE NULL END) AS day_15,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-12' THEN user_id ELSE NULL END) AS day_16,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-13' THEN user_id ELSE NULL END) AS day_17,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-14' THEN user_id ELSE NULL END) AS day_18,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-15' THEN user_id ELSE NULL END) AS day_19,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-16' THEN user_id ELSE NULL END) AS day_20,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-17' THEN user_id ELSE NULL END) AS day_21,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-18' THEN user_id ELSE NULL END) AS day_22,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-19' THEN user_id ELSE NULL END) AS day_23,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-20' THEN user_id ELSE NULL END) AS day_24,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-21' THEN user_id ELSE NULL END) AS day_25,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-22' THEN user_id ELSE NULL END) AS day_26,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-23' THEN user_id ELSE NULL END) AS day_27,
+	COUNT(DISTINCT CASE WHEN dt='2019-03-24' THEN user_id ELSE NULL END) AS day_28
+
+FROM dwd.dwd_daily_active_users_info_wide_table
+WHERE dt>='2019-02-25' AND dt<='2019-03-24'and status='default'
+AND LENGTH(latest_os_name) >0 AND latest_os_name IS NOT NULL
+AND latest_city_name_en IN (SELECT latest_city_name_en FROM da.gwt_20000)
+AND TO_DATE(created_time)=dt
+GROUP BY latest_city_name_en
+
+
+UNION ALL 
+
+-----1-day retention
+
+SELECT 
+
+	cu.latest_city_name_en, '1_day retention' AS index,
+	SUM(CASE WHEN cu.dt='2019-02-25' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_1,
+	SUM(CASE WHEN cu.dt='2019-02-26' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_2,
+	SUM(CASE WHEN cu.dt='2019-02-27' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_3,
+	SUM(CASE WHEN cu.dt='2019-02-28' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_4,
+	SUM(CASE WHEN cu.dt='2019-03-01' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_5,
+	SUM(CASE WHEN cu.dt='2019-03-02' THEN (cu.dau1*1.0/cu.dau0)  ELSE 0 END) AS day_6,
+	SUM(CASE WHEN cu.dt='2019-03-03' THEN (cu.dau1*1.0/cu.dau0)  ELSE 0 END) AS day_7,
+	SUM(CASE WHEN cu.dt='2019-03-04' THEN (cu.dau1*1.0/cu.dau0)  ELSE 0 END) AS day_8,
+	SUM(CASE WHEN cu.dt='2019-03-05' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_9,
+	SUM(CASE WHEN cu.dt='2019-03-06' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_10,
+	SUM(CASE WHEN cu.dt='2019-03-07' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_11,
+	SUM(CASE WHEN cu.dt='2019-03-08' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_12,
+	SUM(CASE WHEN cu.dt='2019-03-09' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_13,
+	SUM(CASE WHEN cu.dt='2019-03-10' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_14,
+	SUM(CASE WHEN cu.dt='2019-03-11' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_15,
+	SUM(CASE WHEN cu.dt='2019-03-12' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_16,
+	SUM(CASE WHEN cu.dt='2019-03-13' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_17,
+	SUM(CASE WHEN cu.dt='2019-03-14' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_18,
+	SUM(CASE WHEN cu.dt='2019-03-15' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_19,
+	SUM(CASE WHEN cu.dt='2019-03-16' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_20,
+	SUM(CASE WHEN cu.dt='2019-03-17' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_21,
+	SUM(CASE WHEN cu.dt='2019-03-18' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_22,
+	SUM(CASE WHEN cu.dt='2019-03-19' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_23,
+	SUM(CASE WHEN cu.dt='2019-03-20' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_24,
+	SUM(CASE WHEN cu.dt='2019-03-21' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_25,
+	SUM(CASE WHEN cu.dt='2019-03-22' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_26,
+	SUM(CASE WHEN cu.dt='2019-03-23' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_27,
+	SUM(CASE WHEN cu.dt='2019-03-24' THEN (cu.dau1*1.0/cu.dau0) ELSE 0 END) AS day_28
+
+
+FROM 
+
+(SELECT COUNT(DISTINCT a.user_id) AS dau0, a.dt,latest_city_name_en,
+	sum(case when b.user_id is not null and b.user_id>0 then 1 else 0 end) as dau1
+
+FROM
+
+(SELECT user_id, dt,latest_city_name_en
+FROM dwd.dwd_daily_active_users_info_wide_table
+WHERE dt>='2019-02-25' AND dt<='2019-03-24' and status='default'
+AND LENGTH(latest_os_name) >0 AND latest_os_name IS NOT NULL
+AND latest_city_name_en IN (SELECT latest_city_name_en FROM da.gwt_20000) )a
+
+LEFT JOIN 
+
+(
+SELECT 
+ dt,
+ user_id 
+FROM
+ dwd.dwd_daily_user_activities
+ where 
+dt>='2019-02-25' AND dt<='2019-03-25' and status='default'
+)b
+
+on date_add(a.dt,1)=b.dt and a.user_id=b.user_id
+GROUP BY a.dt,latest_city_name_en) cu
+GROUP BY cu.latest_city_name_en
+
+
+UNION ALL
+
+-----aaus
+SELECT city_name AS latest_city_name_en, 'aaus' AS index,
+	SUM(CASE WHEN dt='2019-02-25' THEN aaus ELSE 0 END) AS day_1,
+	SUM(CASE WHEN dt='2019-02-26' THEN aaus ELSE 0 END) AS day_2,
+	SUM(CASE WHEN dt='2019-02-27' THEN aaus ELSE 0 END) AS day_3,
+	SUM(CASE WHEN dt='2019-02-28' THEN aaus ELSE 0 END) AS day_4,
+	SUM(CASE WHEN dt='2019-03-01' THEN aaus ELSE 0 END) AS day_5,
+	SUM(CASE WHEN dt='2019-03-02' THEN aaus ELSE 0 END) AS day_6,
+	SUM(CASE WHEN dt='2019-03-03' THEN aaus ELSE 0 END) AS day_7,
+	SUM(CASE WHEN dt='2019-03-04' THEN aaus ELSE 0 END) AS day_8,
+	SUM(CASE WHEN dt='2019-03-05' THEN aaus ELSE 0 END) AS day_9,
+	SUM(CASE WHEN dt='2019-03-06' THEN aaus ELSE 0 END) AS day_10,
+	SUM(CASE WHEN dt='2019-03-07' THEN aaus ELSE 0 END) AS day_11,
+	SUM(CASE WHEN dt='2019-03-08' THEN aaus ELSE 0 END) AS day_12,
+	SUM(CASE WHEN dt='2019-03-09' THEN aaus ELSE 0 END) AS day_13,
+	SUM(CASE WHEN dt='2019-03-10' THEN aaus ELSE 0 END) AS day_14,
+	SUM(CASE WHEN dt='2019-03-11' THEN aaus ELSE 0 END) AS day_15,
+	SUM(CASE WHEN dt='2019-03-12' THEN aaus ELSE 0 END) AS day_16,
+	SUM(CASE WHEN dt='2019-03-13' THEN aaus ELSE 0 END) AS day_17,
+	SUM(CASE WHEN dt='2019-03-14' THEN aaus ELSE 0 END) AS day_18,
+	SUM(CASE WHEN dt='2019-03-15' THEN aaus ELSE 0 END) AS day_19,
+	SUM(CASE WHEN dt='2019-03-16' THEN aaus ELSE 0 END) AS day_20,
+	SUM(CASE WHEN dt='2019-03-17' THEN aaus ELSE 0 END) AS day_21,
+	SUM(CASE WHEN dt='2019-03-18' THEN aaus ELSE 0 END) AS day_22,
+	SUM(CASE WHEN dt='2019-03-19' THEN aaus ELSE 0 END) AS day_23,
+	SUM(CASE WHEN dt='2019-03-20' THEN aaus ELSE 0 END) AS day_24,
+	SUM(CASE WHEN dt='2019-03-21' THEN aaus ELSE 0 END) AS day_25,
+	SUM(CASE WHEN dt='2019-03-22' THEN aaus ELSE 0 END) AS day_26,
+	SUM(CASE WHEN dt='2019-03-23' THEN aaus ELSE 0 END) AS day_27,
+	SUM(CASE WHEN dt='2019-03-24' THEN aaus ELSE 0 END) AS day_28
+
+FROM da.lyr_city_aaus_daily 
+WHERE dt>='2019-02-25' AND dt<='2019-03-25'
+AND city_name IN (SELECT latest_city_name_en FROM da.gwt_20000)
+GROUP BY city_name
